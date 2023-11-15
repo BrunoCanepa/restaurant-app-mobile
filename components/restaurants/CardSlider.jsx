@@ -4,9 +4,12 @@ import Carousel from 'react-native-snap-carousel';
 import { storeContext } from '../../Store/StoreProvider';
 import { useContext } from 'react';
 
-const CardSlider = ({ navigation, images, details }) => {
+const CardSlider = ({ navigation, type, details }) => {
   const [store] = useContext(storeContext);
-  data= store.detalles;
+  data = store.detalles;
+  if (type == "shows"){
+    data = store.shows;
+  }
   return (
     <Carousel
       layout="default"
