@@ -4,20 +4,23 @@ import Carousel from 'react-native-snap-carousel';
 import { storeContext } from '../../Store/StoreProvider';
 import { useContext } from 'react';
 
-const CardSlider = ({ navigation, type, details }) => {
+//Componente para mostrar los restaurantes y shows en carrusel en la pantalla principal
+
+const CardSlider = ({ navigation, type }) => {
+
   const [store] = useContext(storeContext);
-  data = store.detalles;
-  if (type == "shows"){
-    data = store.shows;
-  }
+
+  //Filtra la data según el tipo pasado como parametros para conseguir un array de shows o un array de restaurantes
+  data = store.detalles.filter(item => type === item.type);
+
   return (
     <Carousel
-      layout="default"
       data={data}
-      sliderWidth={300}
-      itemWidth={200}
+      sliderWidth={400}
+      sliderHeight={150}
+      itemWidth={220}
       renderItem={({ item }) => (
-        <TouchableOpacity onPress={()=> navigation.navigate("Details", {item})}>
+        <TouchableOpacity onPress={() => navigation.navigate("Info", { item })}>
           <View style={styles.card}>
             <Image
               source={item.image}
@@ -26,7 +29,6 @@ const CardSlider = ({ navigation, type, details }) => {
           </View>
         </TouchableOpacity>
       )}
-      sliderHeight={150} 
     />
   );
 };
@@ -37,8 +39,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cardImage: {
-    width: 200, 
-    height: 350, 
+    width: 220,
+    height: 350,
     resizeMode: 'cover',
   },
 });

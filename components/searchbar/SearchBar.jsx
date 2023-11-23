@@ -1,30 +1,52 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, StyleSheet, Button, Text, TouchableOpacity } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
+import { storeContext } from '../../Store/StoreProvider';
+import { useContext } from 'react';
 
-const SearchBar = ({ data }) => {
-  const [query, setQuery] = useState('');
+//Componente de barra de busqueda más botón para ir a todos los restaurantes
 
-  const findData = (query) => {
-    if (query === '') {
-      return [];
+const SearchBar = ({ navigation }) => {
+
+  //Variable para obtener lo escrito
+  const [input, setInput] = useState('');
+
+  const [store] = useContext(storeContext);
+  const data = store.detalles;
+
+  //Funcion para obtener la data filtrada en funcion de lo escrito
+  const findData = (input) => {
+    //Si no se escribe nada, no hay data
+    if (input == "") {
+      return ("");
     }
 
-    const filteredData = data.filter((item) => item.toLowerCase().includes(query.toLowerCase()));
+    //Compara la propiedad text de cada item del array con cada letra de lo escrito para devolver el array con las posibles opciones
+    const filteredData = data.filter((item) => item.text.toLowerCase().includes(input.toLowerCase()));
     return filteredData;
+  };
+
+  //Funcion para navegar a la lista de todos los restaurantes y shows
+  const showAll = () => {
+    navigation.navigate('¡Disfruta!');
+  }
+
+  //Funcion para navegar al detalle de cada item mostrado en el desplegable
+  const handleItemClick = (item) => {
+    navigation.navigate("Info", { item });
   };
 
   return (
     <View style={styles.container}>
       <Autocomplete
         placeholder='Buscar...'
-        data={findData(query)}
-        defaultValue={query}
-        onChangeText={(text) => setQuery(text)}
-        renderItem={({ item }) => (
-          <Text>{item}</Text>
-        )}
+        data={findData(input)}
+        onChangeText={(text) => setInput(text)}
+        flatListProps={{
+          renderItem: ({ item }) => <TouchableOpacity onPress={() => handleItemClick(item)} ><Text>{item.text}</Text></TouchableOpacity>,
+        }}
       />
+      <Button title="search 🔎" onPress={() => showAll()} ></Button>
     </View>
   );
 };
@@ -34,15 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 10,
-  },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
-    padding: 5,
-    marginRight: 10,
+    margin: 20,
   },
 });
 

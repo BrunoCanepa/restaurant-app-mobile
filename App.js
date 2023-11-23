@@ -10,11 +10,11 @@ const Stack = createNativeStackNavigator();
 function App() {
   return (
     <StoreProvider>
-    <NavigationContainer>
+      <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Details" component={DetailsScreen} />
-          <Stack.Screen name="List" component={ListScreen} />
+          <Stack.Screen name="Culinarte" component={HomeScreen} />
+          <Stack.Screen name="Info" component={DetailsScreen} />
+          <Stack.Screen name="¡Disfruta!" component={ListScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </StoreProvider>
